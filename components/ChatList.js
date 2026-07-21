@@ -1,27 +1,24 @@
 import { FlatList, View, StyleSheet } from "react-native";
 import { Themes } from "../assets/Themes";
-import Song from "./Song";
+import Chat from "./Chat"; // Corrected this import from "./Song"
 
 const renderChat = ({ item, index }) => (
-  // this is a "quick and dirty" hack for the moment, we'll want to make a new component later
-  <Song
+  <Chat
     index={index}
+    id={item.id}
+    name={item.name}
     imageUrl={item.imageUrl}
-    songTitle={item.name}
-    songArtists={[{ name: "developer" }]}
-    albumName={item.id}
-    duration={1000}
   />
 );
 
 export default function ChatList({ chats }) {
-  // console.log("chats", chats);
   return (
     <View style={styles.container}>
       <FlatList
         data={chats}
-        renderItem={(item, index) => renderChat(item, index)}
-        keyExtractor={(item) => item.name}
+        // Passing renderChat directly corrects the { item, index } destructuring crash
+        renderItem={renderChat}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );
